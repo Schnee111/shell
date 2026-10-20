@@ -27,8 +27,13 @@ Singleton {
     IdleInhibitor {
         enabled: props.enabled
         window: PanelWindow {
-            implicitWidth: 0
-            implicitHeight: 0
+            // Bind to a real screen so the surface is recreated after the
+            // placeholder screen is replaced at startup or on monitor hotplug.
+            // Without this the window can stay unmapped and the inhibitor is
+            // never registered with the compositor.
+            screen: Quickshell.screens[0] ?? null
+            implicitWidth: 1
+            implicitHeight: 1
             color: "transparent"
             mask: Region {}
         }
